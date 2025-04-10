@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Cadastro</title>
+{% endblock %}
+
+{% block body %}
+
+<h1>Cadastro: </h1>
+
+<form action="/cadastro" method="GET">
+    <label for="email"></label>
+    <input type="email" name="email" required/>
+
+    <label for="password">Digite uma senha</label>
+    <input type="password" name="senha"/>
+
+
+</form>
+
+{% blockend %}
