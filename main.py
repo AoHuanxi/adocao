@@ -47,7 +47,24 @@ def login() :
     
 @app.route('/cadastro', methods=['GET'])
 def cadastro():
+    return render_template("cadastro.html")
 
+
+@app.route('/cadastrar/cadastro', methods = ['POST']) 
+def cadastrar() :
+    dados = request.get_json()
+
+    if not dados or 'email' not in dados or 'senha' not in dados:
+        return jsonify({"erro": "Email e senha são obrigatórios"})
+    
+    nome = dados['nome']
+    email = dados['email']
+    senha = dados['senha']
+
+    novo_usuario = tUsers(nome=nome, email=email, senha=senha)
+    db.session.add(novo_usuario)
+    db.session.commit()
+    return render_template('index.html')
 
     
 if __name__ == "__main__" :

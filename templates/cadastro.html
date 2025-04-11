@@ -8,14 +8,19 @@
 
 <h1>Cadastro: </h1>
 
-<form action="/cadastro" method="GET">
-    <label for="email"></label>
-    <input type="email" name="email" required/>
+<form action="/cadastrar/cadastro" method="POST">
+    <label for="name">Email: </label>
+    <input type="name" name="nome" required/>
+    <br>
 
-    <label for="password">Digite uma senha</label>
-    <input type="password" name="senha"/>
+    <label for="email">Email: </label>
+    <input type="email" name="email" required/>
+    <br>
+
+    <label for="password">Digite uma senha: </label>
+    <input type="password" name="senha" required/>
 
 
 </form>
 
-{% blockend %}
+{% endblock %}
