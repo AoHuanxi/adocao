@@ -22,28 +22,31 @@ def homepage() :
     return render_template("index.html")
 
 
-@app.route('/login', methods=['POST']) 
+@app.route('/login', methods=['GET','POST']) 
 def login() : 
-    dados = request.get_json()
-    
-    if not dados or 'email' not in dados or 'senha' not in dados:
-        return jsonify({"erro": "Email e senha são obrigatórios"})
-    
-    email = dados['email']
-    senha = dados['senha']
 
-    usuario = tUsers.query.filter_by(email=email).first()
+    email = request.form.get('email')
+    senha = request.form.get('senha')
+    
+    if not email or not senha :
+        return jsonify({"erro": "Email e senha são obrigatórios"})
+
+    usuario = tUsers.query.filter_by(email=email, senha=senha).first()
 
     if not usuario:
         return jsonify({"mensagem": "Credenciais inválidas"})
+    else:
+        return 'usuario validado'
     
+
+    '''
     if check_password_hash(usuario.senha, senha):
         return jsonify({
             "mensagem": "Login bem-sucedido",
             "usuario_id": usuario.id
         })
     else:
-        return jsonify({"mensagem": "Credenciais inválidas"})
+        return jsonify({"mensagem": "Credenciais inválidas"}) '''
     
 @app.route('/cadastro', methods=['GET'])
 def cadastro():
@@ -52,14 +55,17 @@ def cadastro():
 
 @app.route('/cadastrar/cadastro', methods = ['POST']) 
 def cadastrar() :
-    dados = request.get_json()
+    nome = request.form.get('nome')
+    email = request.form.get('email')
+    senha = request.form.get('senha')
 
-    if not dados or 'email' not in dados or 'senha' not in dados:
+    if not email or not senha:
         return jsonify({"erro": "Email e senha são obrigatórios"})
     
-    nome = dados['nome']
-    email = dados['email']
-    senha = dados['senha']
+    verificar_email = tUsers.query.filter_by(email=email).first()
+
+    if verificar_email :
+        return 'email ja cadastrado'
 
     novo_usuario = tUsers(nome=nome, email=email, senha=senha)
     db.session.add(novo_usuario)
